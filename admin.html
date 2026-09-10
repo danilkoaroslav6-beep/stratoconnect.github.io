@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDc0EwQGs5rbJ3iP4uY8xcG_4zBKZCPSvI",
+        authDomain: "strato-connect.firebaseapp.com",
+        projectId: "strato-connect",
+        storageBucket: "strato-connect.firebasestorage.app",
+        messagingSenderId: "892196467983",
+        appId: "1:892196467983:web:8ee32ef3221f9f49963a7a",
+        measurementId: "G-S0SY62RHWN"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+    // Ваши точные ключи подключения
+    const firebaseConfig = {
+        apiKey: "AIzaSyDc0EwQGs5rbJ3iP4uY8xcG_4zBKZCPSvI",
+        authDomain: "strato-connect.firebaseapp.com",
+        projectId: "strato-connect",
+        storageBucket: "strato-connect.firebasestorage.app",
+        messagingSenderId: "892196467983",
+        appId: "1:892196467983:web:8ee32ef3221f9f49963a7a",
+        measurementId: "G-S0SY62RHWN"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const ADMIN_SECRET = "strato2026"; // Пароль для входа админа
+
+    function checkAdmin() {
+        const pass = document.getElementById('adminPass').value;
+        if (pass === ADMIN_SECRET) {
+            document.getElementById('loginBlock').style.display = 'none';
+            document.getElementById('dashboardBlock').style.display = 'block';
+            loadApplications();
+        } else {
+            alert('Incorrect passcode!');
+        }
+    }
+
+    function loadApplications() {
+        db.collection('applications').onSnapshot(snapshot => {
+            const tbody = document.getElementById('appTableBody');
+            tbody.innerHTML = '';
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const row = `
+                    <tr>
+                        <td>${data.date}</td>
+                        <td>${data.name}</td>
+                        <td>${data.discord}</td>
+                        <td>${data.aircraft}</td>
+                        <td>${data.experience}</td>
+                        <td><strong>${data.status}</strong></td>
+                        <td>
+                            <button class="btn-approve" onclick="updateStatus('${doc.id}', 'Approved')">Approve</button>
+                            <button class="btn-reject" onclick="updateStatus('${doc.id}', 'Rejected')">Reject</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        });
+    }
+
+    async function updateStatus(id, newStatus) {
+        await db.collection('applications').doc(id).update({ status: newStatus });
+    }
+</script>
+</body>
+</html>

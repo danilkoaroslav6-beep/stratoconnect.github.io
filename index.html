@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strato Connect - Connecting World</title>
+
+    <!-- Подключаем шрифт Alata из Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Подключаем ваш файл стилей -->
+    <link rel="stylesheet" href="static/styles/style.css">
+</head>
+
+<head>
+    <style>
+  .btn-apply {
+    background: linear-gradient(135deg, #0CBFDF, #089bb5); /* Красивый градиент */
+    color: #ffffff; /* Белый текст */
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 28px; /* Отступы для формы кнопки */
+    border: none;
+    border-radius: 30px; /* Сильное закругление как у кнопок меню */
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(12, 191, 223, 0.3); /* Легкое свечение */
+    transition: all 0.3s ease; /* Плавная анимация */
+  }
+
+  .btn-apply:hover {
+    transform: translateY(-2px); /* Кнопка чуть приподнимается */
+    box-shadow: 0 6px 20px rgba(12, 191, 223, 0.5); /* Свечение усиливается */
+    background: linear-gradient(135deg, #0ce0ff, #0CBFDF);
+  }
+
+  .btn-apply:active {
+    transform: translateY(1px); /* Эффект нажатия */
+  }
+  #applyModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    }
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Подключаем интерактивные карты Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Название на вкладке браузера -->
+    <title>Strato Connect - Connection World</title>
+
+    <!-- Иконка на вкладке браузера -->
+    <link rel="icon" type="image/png"
+        href="https://cdn.discordapp.com/attachments/1432818572115312783/1541755732490453012/image.png?ex=6a8ebf6b&is=6a8d6deb&hm=a96556b51b2b98a7e58526fb9dbd593ebc55f401d7f95f42c94fac1475d51f48">
+
+    <!-- Подключение ваших стилей и шрифтов -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+</head>
+
+<body><!-- HTML модального окна (вставь перед </body>) -->
+<div id="applyModal" class="modal-overlay">
+    <div class="modal-card">
+        <span class="modal-close" onclick="closeApplyModal()">&times;</span>
+        <h2>Join Strato Connect</h2>
+        
+        <form id="pilotApplyForm">
+            <div class="form-row">
+                <input type="text" id="pilotFirstName" placeholder="First Name *" required>
+                <input type="text" id="pilotLastName" placeholder="Last Name *" required>
+            </div>
+            <div class="form-row">
+                <input type="number" id="pilotAge" placeholder="Age *" min="13" required>
+                <input type="text" id="pilotCountry" placeholder="Country *" required>
+            </div>
+            <div class="form-row">
+                <input type="email" id="pilotEmail" placeholder="Email *" required>
+                <input type="text" id="pilotDiscord" placeholder="Discord Username *" required>
+            </div>
+            <div class="form-row">
+                <select id="pilotSimulator" required>
+                    <option value="" disabled selected>Select Simulator *</option>
+                    <option value="MSFS 2020">MSFS 2020</option>
+                    <option value="MSFS 2024">MSFS 2024</option>
+                    <option value="X-Plane 12">X-Plane 12</option>
+                    <option value="X-Plane 11">X-Plane 11</option>
+                </select>
+                <select id="pilotExp" required>
+                    <option value="" disabled selected>Experience Level *</option>
+                    <option value="Beginner">Beginner (< 50 hrs)</option>
+                    <option value="Intermediate">Intermediate (50-200 hrs)</option>
+                    <option value="Advanced">Advanced (200+ hrs)</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <input type="number" id="pilotHours" placeholder="Flight Hours *" min="0" required>
+                <select id="pilotNetwork" required>
+                    <option value="" disabled selected>Network *</option>
+                    <option value="VATSIM">VATSIM</option>
+                    <option value="IVAO">IVAO</option>
+                    <option value="None">None / Offline</option>
+                </select>
+            </div>
+            <textarea id="pilotReason" placeholder="Why do you want to join Strato Connect? *" rows="3" required></textarea>
+            
+            <div id="formStatus" class="form-status"></div>
+            <button type="submit" class="btn-submit">Submit Application →</button>
+        </form>
+    </div>
+</div>
+
+<!-- CSS стили модалки (добавь в <head> в <style>) -->
+<style>
+  .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 99999;
+      justify-content: center;
+      align-items: center;
+  }
+  .modal-card {
+      background: #111827;
+      color: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 550px;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  }
+  .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #9ca3af;
+  }
+  .form-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+  }
+  .form-row input, .form-row select, #pilotReason {
+      width: 100%;
+      padding: 10px;
+      background: #1f2937;
+      border: 1px solid #374151;
+      color: white;
+      border-radius: 6px;
+      box-sizing: border-box;
+  }
+  .form-status {
+      display: none;
+      margin: 10px 0;
+      font-weight: bold;
+      text-align: center;
+  }
+  .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background: #0CBFDF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+  }
+</style>
+
+<!-- JS скрипт управления (вставь перед </body> после модалки) -->
+<script>
+    function openApplyModal() {
+        document.getElementById('applyModal').style.display = 'flex';
+    }
+
+    function closeApplyModal() {
+        document.getElementById('applyModal').style.display = 'none';
+        document.getElementById('pilotApplyForm').reset();
+        document.getElementById('formStatus').style.display = 'none';
+    }
+</script>
+    <!-- ========================================== -->
+<!-- 1. КНОПКА ОТКРЫТИЯ ОКНА РЕГИСТРАЦИИ -->
+<!-- ========================================== -->
+ <!-- 1. Библиотеки Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+  // 2. Инициализация (здесь твои ключи)
+  const firebaseConfig = {
+    apiKey: "ТВОЙ_API_KEY",
+    authDomain: "твой-проект.firebaseapp.com",
+    projectId: "твой-проект",
+    storageBucket: "твой-проект.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abc123def456"
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  const db = firebase.firestore();
+</script>
+
+<!-- 3. И ТОЛЬКО ПОТОМ твой скрипт формы -->
+<script>
+  document.getElementById('pilotApplyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const statusDiv = document.getElementById('formStatus');
+    const submitBtn = document.querySelector('.btn-submit');
+    
+    if (submitBtn) {
+      submitBtn.innerText = 'Submitting...';
+      submitBtn.disabled = true;
+    }
+
+    try {
+      const formData = {
+        firstName: document.getElementById('pilotFirstName').value,
+        lastName: document.getElementById('pilotLastName').value,
+        age: document.getElementById('pilotAge').value,
+        country: document.getElementById('pilotCountry').value,
+        email: document.getElementById('pilotEmail').value,
+        discord: document.getElementById('pilotDiscord').value,
+        simulator: document.getElementById('pilotSimulator').value,
+        experience: document.getElementById('pilotExp').value,
+        hours: document.getElementById('pilotHours').value,
+        network: document.getElementById('pilotNetwork').value,
+        reason: document.getElementById('pilotReason').value,
+        status: 'Pending',
+        date: new Date().toLocaleString()
+      };
+
+      await db.collection('applications').add(formData);
+
+      if (statusDiv) {
+        statusDiv.style.display = 'block';
+        statusDiv.style.color = '#84cc16';
+        statusDiv.innerText = 'Application successfully submitted!';
+      }
+
+      setTimeout(() => {
+        closeApplyModal();
+        if (submitBtn) {
+          submitBtn.innerText = 'Submit Application →';
+          submitBtn.disabled = false;
+        }
+      }, 2500);
+
+    } catch (error) {
+      console.error("Firebase submit error:", error);
+      if (statusDiv) {
+        statusDiv.style.display = 'block';
+        statusDiv.style.color = '#ef4444';
+        statusDiv.innerText = 'Error: ' + error.message;
+      }
+      if (submitBtn) {
+        submitBtn.innerText = 'Submit Application →';
+        submitBtn.disabled = false;
+      }
+    }
+  });
+</script>
+
+
+<!-- ========================================== -->
+<!-- 2. СКРЫТОЕ ВСПЛЫВАЮЩЕЕ ОКНО (МОДАЛКА) И ФОРМА -->
+<!-- ========================================== -->
+<div id="applyModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center;">
+    <div class="modal-content" style="background: white; padding: 30px; border-radius: 10px; max-width: 700px; width: 90%; max-height: 90vh; overflow-y: auto; position: relative;">
+        
+        <!-- Кнопка закрытия (крестик) -->
+        <span onclick="closeApplyModal()" style="position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; font-weight: bold;">&times;</span>
+        
+        <h2>Join Strato Connect</h2>
+        <p style="color: #64748b; margin-bottom: 20px;">Please complete all required fields marked with *.</p>
+
+        <form id="pilotApplyForm" class="form-grid">
+            <div class="form-group">
+                <label>First Name *</label>
+                <input type="text" id="pilotFirstName" placeholder="e.g. Alex" required>
+            </div>
+            <div class="form-group">
+                <label>Last Name *</label>
+                <input type="text" id="pilotLastName" placeholder="e.g. Carter" required>
+            </div>
+
+            <div class="form-group">
+                <label>Age *</label>
+                <input type="number" id="pilotAge" placeholder="18" min="13" max="99" required>
+            </div>
+            <div class="form-group">
+                <label>Country *</label>
+                <input type="text" id="pilotCountry" placeholder="Start typing..." required>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" id="pilotEmail" placeholder="pilot@email.com" required>
+            </div>
+            <div class="form-group">
+                <label>Discord Username *</label>
+                <input type="text" id="pilotDiscord" placeholder="alex.carter" required>
+            </div>
+
+            <div class="form-group">
+                <label>Simulator *</label>
+                <select id="pilotSimulator" required>
+                    <option value="" disabled selected>Select one</option>
+                    <option value="MSFS 2020">MSFS 2020</option>
+                    <option value="MSFS 2024">MSFS 2024</option>
+                    <option value="X-Plane 12">X-Plane 12</option>
+                    <option value="X-Plane 11">X-Plane 11</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Experience Level *</label>
+                <select id="pilotExp" required>
+                    <option value="" disabled selected>Select your level</option>
+                    <option value="Beginner">Beginner (&lt; 50 hrs)</option>
+                    <option value="Intermediate">Intermediate (50-200 hrs)</option>
+                    <option value="Advanced">Advanced (200+ hrs)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Approximate Flight Hours *</label>
+                <input type="number" id="pilotHours" placeholder="e.g. 175" min="0" required>
+            </div>
+            <div class="form-group">
+                <label>Network *</label>
+                <select id="pilotNetwork" required>
+                    <option value="" disabled selected>Select one</option>
+                    <option value="VATSIM">VATSIM</option>
+                    <option value="IVAO">IVAO</option>
+                    <option value="None">None / Offline</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Why do you want to join Strato Connect? *</label>
+                <textarea id="pilotReason" rows="4" required></textarea>
+            </div>
+
+            <!-- Место для показа статуса (ошибки или успеха) -->
+            <div class="form-group full-width" style="text-align: center; margin-top: 10px;">
+                <div id="formStatus" style="display: none; margin-bottom: 15px; font-weight: bold;"></div>
+                <button type="submit" class="btn-submit" style="width: 100%; padding: 15px; background-color: #0CBFDF; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;">Submit Pilot Application &rarr;</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+  document.getElementById('pilotApplyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const statusDiv = document.getElementById('formStatus');
+    const submitBtn = this.querySelector('button[type="submit"]');
+
+    // Проверяем, инициализирован ли Firebase
+    if (typeof db === 'undefined') {
+      alert("Ошибка: Переменная 'db' не найдена! Проверь, подключен ли Firebase скрипт выше.");
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.innerText = 'Sending...';
+      submitBtn.disabled = true;
+    }
+
+    const formData = {
+      firstName: document.getElementById('pilotFirstName').value,
+      lastName: document.getElementById('pilotLastName').value,
+      age: document.getElementById('pilotAge').value,
+      country: document.getElementById('pilotCountry').value,
+      email: document.getElementById('pilotEmail').value,
+      discord: document.getElementById('pilotDiscord').value,
+      simulator: document.getElementById('pilotSimulator').value,
+      experience: document.getElementById('pilotExp').value,
+      hours: document.getElementById('pilotHours').value,
+      network: document.getElementById('pilotNetwork').value,
+      reason: document.getElementById('pilotReason').value,
+      status: 'Pending',
+      submittedAt: new Date().toISOString()
+    };
+
+    db.collection('applications').add(formData)
+      .then(() => {
+        if (statusDiv) {
+          statusDiv.style.display = 'block';
+          statusDiv.style.color = '#4ade80';
+          statusDiv.innerText = 'Application sent successfully!';
+        }
+        setTimeout(() => {
+          closeApplyModal();
+          if (submitBtn) {
+            submitBtn.innerText = 'Submit Application →';
+            submitBtn.disabled = false;
+          }
+        }, 1500);
+      })
+      .catch((error) => {
+        console.error("Firebase Error:", error);
+        alert("Firebase Error: " + error.message);
+        if (statusDiv) {
+          statusDiv.style.display = 'block';
+          statusDiv.style.color = '#f87171';
+          statusDiv.innerText = 'Error: ' + error.message;
+        }
+        if (submitBtn) {
+          submitBtn.innerText = 'Submit Application →';
+          submitBtn.disabled = false;
+        }
+      });
+  });
+</script>
+<script>
+  document.getElementById('pilotApplyForm').addEventListener('submit', async function(e) {
+    // 1. Отменяем стандартное закрытие/перезагрузку формы
+    e.preventDefault();
+
+    const statusDiv = document.getElementById('formStatus');
+    const submitBtn = this.querySelector('button[type="submit"]');
+
+    // Меняем текст кнопки, чтобы виден был процесс
+    if (submitBtn) {
+      submitBtn.innerText = 'Sending...';
+      submitBtn.disabled = true;
+    }
+
+    try {
+      // 2. Собираем данные
+      const formData = {
+        firstName: document.getElementById('pilotFirstName').value,
+        lastName: document.getElementById('pilotLastName').value,
+        age: document.getElementById('pilotAge').value,
+        country: document.getElementById('pilotCountry').value,
+        email: document.getElementById('pilotEmail').value,
+        discord: document.getElementById('pilotDiscord').value,
+        simulator: document.getElementById('pilotSimulator').value,
+        experience: document.getElementById('pilotExp').value,
+        hours: document.getElementById('pilotHours').value,
+        network: document.getElementById('pilotNetwork').value,
+        reason: document.getElementById('pilotReason').value,
+        status: 'Pending',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      // 3. Отправляем в Firestore
+      await db.collection('applications').add(formData);
+
+      // 4. Показываем сообщение об успехе
+      if (statusDiv) {
+        statusDiv.style.display = 'block';
+        statusDiv.style.color = '#4ade80';
+        statusDiv.innerText = 'Application sent successfully!';
+      }
+
+      // 5. Закрываем окно ТОЛЬКО через 2 секунды
+      setTimeout(() => {
+        closeApplyModal();
+        if (submitBtn) {
+          submitBtn.innerText = 'Submit Application →';
+          submitBtn.disabled = false;
+        }
+      }, 2000);
+
+    } catch (error) {
+      console.error("Firebase Error:", error);
+      if (statusDiv) {
+        statusDiv.style.display = 'block';
+        statusDiv.style.color = '#f87171';
+        statusDiv.innerText = 'Error: ' + error.message;
+      }
+      if (submitBtn) {
+        submitBtn.innerText = 'Submit Application →';
+        submitBtn.disabled = false;
+      }
+    }
+  });
+</script>
+
+
+    <!-- ========================================= -->
+    <!-- НАВИГАЦИОННОЕ МЕНЮ -->
+    <!-- ========================================= -->
+    <nav class="top-nav">
+        <!-- Логотип (ссылка ведет на index.html) -->
+        <a href="index.html" class="nav-logo">
+            <img src="file:///C:/Users/Asus/Desktop/Project%20Nah/testik/static/imanges/Strato%20Logo%20Without%20Background.png"
+                alt="Airline Logo">
+        </a>
+
+        <!-- Кнопки-таблетки -->
+        <div class="nav-links">
+            <!-- Ссылка ведет на блок с id="home" -->
+            <a href="#home" class="nav-btn active">Home</a>
+
+            <!-- Ссылка ведет на блок с id="about" -->
+            <a href="#about" class="nav-btn">About us</a>
+            <a href="https://newsky.app/airline/sto/operations" class="nav-btn">Explore Routes</a>
+
+            <a href="#hubs" class="nav-btn">Hub</a>
+            <a href="https://discord.com/" target="_blank" class="nav-btn">Social</a>
+            <a href="#fleet" class="nav-btn">Fleet</a>
+            <button class="btn-apply" onclick="openApplyModal()">Join Strato Connect</button>
+
+        </div>
+    </nav>
+
+    <!-- Главный контейнер страницы -->
+    <div class="main-container">
+
+        <!-- Левая колонка: текст и кнопки -->
+        <div class="content-left">
+            <div class="badge">
+                <span class="dot"></span> VIRTUAL AIRLINE
+            </div>
+
+            <h1 class="hero-title">
+                Strato Connect <br>
+                <span class="highlight-text">Connecting World.</span>
+            </h1>
+
+            <p class="description-text">
+                Strato Connect is a modern,</span> virtual airline built
+                for Microsoft Flight Simulator and X-Plane enthusiasts. Founded on the
+                principles of realism, operational flexibility, and community, we seamlessly connect major aviation hubs
+                across
+                Europe, the Caucasus, and beyond.
+            </p>
+
+            <div class="buttons-row">
+                <!-- Верхняя кнопка -->
+            <a href="#join" class="nav-btn-join">
+    <i class="fa-solid fa-plane"></i> Join Strato Connect
+            </a>
+                <a href="https://newsky.app/airline/sto/info" class="btn-secondary">Explore Routes</a>
+            </div>
+        </div>
+
+        <!-- Правая колонка: карточки информации -->
+        <div class="content-right">
+            <div class="info-list">
+
+                <div class="info-card">
+                    <div class="info-label">CALLSIGN</div>
+                    <div class="info-value">STRATO</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">ICAO</div>
+                    <div class="info-value">STO</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">IATA</div>
+                    <div class="info-value">5C</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-label">COMMUNITY</div>
+                    <div class="info-value">Open to pilots</div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- ========================================= -->
+    <!-- ПОЛОСА СО СТАТИСТИКОЙ -->
+    <!-- ========================================= -->
+
+    <div class="stats-section">
+        <div class="stats-box">
+            <div class="stat-item">
+                <div class="stat-number">4+</div>
+                <div class="stat-label">AIRCRAFT TYPES</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">2</div>
+                <div class="stat-label">MAIN HUBS</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">35+</div>
+                <div class="stat-label">ROUTES</div>
+            </div>
+            <div class="stat-item" style="border: none;">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">VIRTUAL NETWORK</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- БЕЛЫЙ БЛОК: ONE GROUP. ONE PASSION. -->
+    <!-- ========================================= -->
+    <div class="features-section" id="about">
+        <div class="features-header">
+            <div class="badge-outline">INCLUSIVE AIRLINE</div>
+            <h2 class="One-Group ">One group. <span class="text-green">One passion.</span></h2>
+            <p>Whether you are taking your first flight or have thousands of hours in the simulator, Strato Connect
+                gives you a place to fly, learn and meet other aviators with pilots.</p>
+        </div>
+
+        <div class="features-grid">
+            <!-- Карточка 1 -->
+            <div class="feature-card">
+                <div class="icon">✈️</div>
+                <h3>Realistic Operations</h3>
+                <p>Structured routes, aircraft assignments and YourGo tracker flight logging create an immersive online
+                    experience.</p>
+            </div>
+            <!-- Карточка 2 -->
+            <div class="feature-card">
+                <div class="icon">🎮</div>
+                <h3>Fly Your Way</h3>
+                <p>Use Microsoft Flight Simulator 2020/2024, X-Plane 11 or X-Plane 12 without limitations to our pilot
+                    standards.</p>
+            </div>
+            <!-- Карточка 3 -->
+            <div class="feature-card">
+                <div class="icon">🤝</div>
+                <h3>Community First</h3>
+                <p>Join a friendly virtual aviation community, take part in events and grow your skills with fellow
+                    pilots.</p>
+            </div>
+        </div>
+    </div>
+    <!-- ========================================= -->
+    <!-- БЛОК МАРШРУТОВ И ФЛОТА (МЕСТО КУДА СКРОЛЛИТЬ) -->
+    <!-- ========================================= -->
+    <div class="routes-section" id="routes">
+        <div class="routes-container">
+            <div class="badge-outline">OUR FLEET & DESTINATIONS</div>
+            <h2>Explore Our <span class="text-green">Network</span></h2>
+            <p>We connect major aviation hubs using modern aircraft fleet optimized for short and long-haul operations.
+            </p>
+
+            <div class="routes-grid">
+                <div class="route-card">
+                    <div class="route-icon">✈️</div>
+                    <h3>Airbus A320neo / A319</h3>
+                    <p>Primary narrow-body fleet for European and regional operations.</p>
+                </div>
+                <div class="route-card">
+                    <div class="route-icon">🌐</div>
+                    <h3>Boeing 737-800</h3>
+                    <p>Reliable medium-haul routing across key hubs and popular routes.</p>
+                </div>
+                <div class="route-card">
+                    <div class="route-icon">🛫</div>
+                    <h3>Airbus A350-900</h3>
+                    <p>Long-haul flagship connecting Europe with international destinations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ========================================= -->
+    <!-- БЛОК КАК ВСТУПИТЬ (JOIN US) -->
+    <!-- ========================================= -->
+
+            <!-- Блок внизу, куда прокручивается страница -->
+<div class="join-section" id="join">
+    <div class="join-container">
+        <div class="hub-badge" style="margin: 0 auto 15px auto;">START YOUR CAREER</div>
+        <h2>Join <span class="text-green">Strato Connect</span></h2>
+        
+        <!-- Дальше идут твои карточки 01, 02, 03... -->
+            <div class="join-steps">
+                <!-- Шаг 1 -->
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3>Register on NewSky</h3>
+                    <p>Create your account on our NewSky portal to track your flights, view schedules, and log hours.</p>
+                </div>
+                
+                <!-- Шаг 2 -->
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3>Join our Discord</h3>
+                    <p>Connect with other pilots, get operational support, and participate in community group flights.</p>
+                </div>
+                
+                <!-- Шаг 3 -->
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3>Take to the Skies</h3>
+                    <p>Book your first flight out of Tbilisi or Milan on our A320, B737, or A350 fleet and start flying!</p>
+                </div>
+            </div>
+
+            <!-- Большая кнопка перехода на NewSky -->
+            <a href="https://newsky.app/airline/sto/info" target="_blank" class="nav-btn-join" style="font-size: 16px; padding: 14px 35px;">
+                Open NewSky Portal <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- ПОДВАЛ САЙТА (FOOTER) -->
+    <!-- ========================================= -->
+
+    <!-- ========================================= -->
+    <!-- ИНТЕРАКТИВНЫЕ ХАБЫ С ЖИВОЙ КАРТОЙ -->
+    <!-- ========================================= -->
+     <!-- ========================================= -->
+    <!-- БЛОК ФЛОТА (OUR FLEET) -->
+    <!-- ========================================= -->
+    <div class="fleet-section" id="fleet">
+        <div class="fleet-container">
+            <div class="hub-badge" style="margin: 0 auto 15px auto;">OUR AIRCRAFT</div>
+            <h2>Modern <span class="text-green">Fleet</span></h2>
+            <p>Engineered for efficiency, comfort, and performance across all route networks.</p>
+
+            <div class="fleet-grid">
+                <!-- Самолет 1 -->
+                <div class="fleet-card">
+                    <div>
+                        <h3>Airbus A319 IAE</h3>
+                        <p>Reliable narrow-body workhorse optimized for European regional operations and short hops.</p>
+                    </div>
+                    <span class="fleet-card-tag">Short / Medium Haul</span>
+                </div>
+
+                <!-- Самолет 2 -->
+                <div class="fleet-card">
+                    <div>
+                        <h3>Airbus A320neo</h3>
+                        <p>State-of-the-art efficiency, forming the backbone of our modern short-haul network.</p>
+                    </div>
+                    <span class="fleet-card-tag">Short / Medium Haul</span>
+                </div>
+
+                <!-- Самолет 3 -->
+                <div class="fleet-card">
+                    <div>
+                        <h3>Boeing 737-800</h3>
+                        <p>Trusted classic jet handling key business routes and high-demand destinations.</p>
+                    </div>
+                    <span class="fleet-card-tag">Medium Haul</span>
+                </div>
+
+                <!-- Самолет 4 -->
+                <div class="fleet-card">
+                    <div>
+                        <h3>Airbus A350-900</h3>
+                        <p>Our long-haul flagship connecting Europe with transcontinental hubs in the Americas and Asia.</p>
+                    </div>
+                    <span class="fleet-card-tag">Long Haul Flagship</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hubs-section" id="hubs">
+        <div class="hubs-container">
+
+            <!-- ХАБ 1: ТБИЛИСИ -->
+            <div class="strato-hub-card">
+                <div class="hub-details">
+                    <div class="hub-badge">UGTB</div>
+                    <h3 class="hub-city">Tbilisi</h3>
+                    <p class="hub-description">
+                        Shota Rustaveli Tbilisi International Airport (IATA: TBS, ICAO: UGTB) is the main international
+                        airport in Georgia, strategically located at the crossroads of Europe and Asia.
+                    </p>
+                    <div class="hub-stats">21 ROUTES</div>
+                </div>
+
+                <!-- Интерактивная карта Тбилиси -->
+                <div class="hub-map-box">
+                    <div id="map-tbilisi" class="interactive-map"></div>
+                </div>
+            </div>
+
+            <!-- ХАБ 2: МИЛАН -->
+            <div class="strato-hub-card">
+                <div class="hub-details">
+                    <div class="hub-badge">LIMC</div>
+                    <h3 class="hub-city">Milan Malpensa</h3>
+                    <p class="hub-description">
+                        Milan Malpensa Airport (IATA: MXP, ICAO: LIMC) is the largest airport in Northern Italy, serving
+                        as our primary European hub for regional and long-haul connections.
+                    </p>
+                    <div class="hub-stats">27 ROUTES</div>
+                </div>
+
+                <!-- Интерактивная карта Милана -->
+                <div class="hub-map-box">
+                    <div id="map-milan" class="interactive-map"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Скрипт отрисовки дуг и интерактивной карты -->
+<!-- Скрипт отрисовки дуг и интерактивной карты -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Функция создания красивой дуги (маршрута самолета)
+    function drawFlightArc(map, start, end, label) {
+        const lat1 = start[0], lng1 = start[1];
+        const lat2 = end[0], lng2 = end[1];
+        const midLat = (lat1 + lat2) / 2 + (lng2 - lng1) * 0.15;
+        const midLng = (lng1 + lng2) / 2 - (lat2 - lat1) * 0.15;
+
+        const points = [];
+        for (let t = 0; t <= 1; t += 0.02) {
+            const lat = (1 - t) * (1 - t) * lat1 + 2 * (1 - t) * t * midLat + t * t * lat2;
+            const lng = (1 - t) * (1 - t) * lng1 + 2 * (1 - t) * t * midLng + t * t * lng2;
+            points.push([lat, lng]);
+        }
+
+        // Рисуем дугу бирюзовым цветом
+        L.polyline(points, {
+            color: '#0CBFDF',
+            weight: 2,
+            opacity: 0.75,
+            smoothFactor: 1
+        }).addTo(map);
+
+        // Точка назначения
+        L.circleMarker(end, {
+            radius: 4,
+            fillColor: '#0CBFDF',
+            color: '#ffffff',
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.9
+        }).bindTooltip(label, { permanent: false, direction: 'top' }).addTo(map);
+    }
+
+    // Иконка основного хаба (со свечением)
+    function addHubMarker(map, coords, name) {
+        L.circleMarker(coords, {
+            radius: 7,
+            fillColor: '#ffffff',
+            color: '#0CBFDF',
+            weight: 3,
+            opacity: 1,
+            fillOpacity: 1
+        }).bindTooltip("<b>" + name + " (HUB)</b>", { permanent: true, direction: 'right' }).addTo(map);
+    }
+
+    const tileLayerUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+    const tileOptions = { attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 10, minZoom: 2 };
+
+    // Проверяем, есть ли на странице блок для Тбилиси
+    if (document.getElementById('map-tbilisi')) {
+        const tbilisiCoords = [41.6692, 44.9547]; // Координаты UGTB
+        const mapTbilisi = L.map('map-tbilisi', { center: [43.0, 45.0], zoom: 4 });
+        L.tileLayer(tileLayerUrl, tileOptions).addTo(mapTbilisi);
+        addHubMarker(mapTbilisi, tbilisiCoords, "UGTB");
+
+const tbilisiDestinations = [
+            // Georgia
+            { coords: [41.6103, 41.5996], name: "Batumi (UGSB)" },
+            
+            // Azerbaijan
+            { coords: [40.4687, 50.0440], name: "Baku (UBBB)" },
+            
+            // Türkiye
+            { coords: [40.1281, 32.9951], name: "Ankara (LTAC)" },
+            { coords: [41.2753, 28.7519], name: "Istanbul (LTFM)" },
+            
+            // Tajikistan
+            { coords: [38.5433, 68.8250], name: "Dushanbe (UTDD)" },
+            
+            // Kazakhstan
+            { coords: [50.2450, 57.2033], name: "Aktobe (UATT)" },
+            { coords: [51.0222, 71.4669], name: "Astana (UACC)" },
+            
+            // Moldova
+            { coords: [46.9277, 28.9306], name: "Chișinău (LUKK)" },
+            
+            // Romania
+            { coords: [44.5711, 26.1848], name: "Bucharest (LROP)" },
+            
+            // Ukraine
+            { coords: [50.3450, 30.8947], name: "Kyiv (UKBB)" },
+            { coords: [46.4268, 30.6765], name: "Odesa (UKOO)" },
+            
+            // China
+            { coords: [40.0801, 116.5846], name: "Beijing (ZBAA)" },
+            
+            // South Korea
+            { coords: [37.4602, 126.4407], name: "Seoul (RKSI)" },
+            
+            // Japan
+            { coords: [35.5494, 139.7798], name: "Tokyo (RJTT)" },
+            
+            // Thailand
+            { coords: [13.6900, 100.7501], name: "Bangkok (VTBS)" },
+            
+            // Italy
+            { coords: [45.6300, 8.7231], name: "Milan (LIMC)" },
+            
+            // --- НОВЫЕ МАРШРУТЫ ---
+            { coords: [50.0333, 8.5705], name: "Frankfurt (EDDF)" },
+            { coords: [48.1103, 16.5697], name: "Vienna (LOWW)" },
+            { coords: [40.1473, 44.3959], name: "Yerevan (UDYE)" },
+            { coords: [52.3105, 4.7683], name: "Amsterdam (EHAM)" }
+        ];
+
+// ==========================================
+    // КАРТА 2: МИЛАН (LIMC)
+    // ==========================================
+    if (document.getElementById('map-milan')) {
+        const milanCoords = [45.6300, 8.7231]; // Координаты LIMC
+        const mapMilan = L.map('map-milan', { center: [45.0, 10.0], zoom: 4 });
+        L.tileLayer(tileLayerUrl, tileOptions).addTo(mapMilan);
+        addHubMarker(mapMilan, milanCoords, "LIMC");
+
+        const milanDestinations = [
+            // Germany
+            { coords: [52.3622, 13.5006], name: "Berlin (EDDB)" },
+            { coords: [50.0333, 8.5705], name: "Frankfurt (EDDF)" },
+            { coords: [53.6303, 9.9882], name: "Hamburg (EDDH)" },
+            
+            // United Kingdom
+            { coords: [51.1480, -0.1902], name: "London Gatwick (EGKK)" },
+            { coords: [53.3537, -2.2749], name: "Manchester (EGCC)" },
+            
+            // France
+            { coords: [49.0097, 2.5479], name: "Paris (LFPG)" },
+            
+            // Spain
+            { coords: [40.4719, -3.5626], name: "Madrid (LEMD)" },
+            
+            // Poland
+            { coords: [50.0777, 19.7848], name: "Kraków (EPKK)" },
+            
+            // Turkey
+            { coords: [41.2753, 28.7519], name: "Istanbul (LTFM)" },
+            
+            // Romania
+            { coords: [44.5711, 26.1848], name: "Bucharest (LROP)" },
+            
+            // Ukraine
+            { coords: [50.3450, 30.8947], name: "Kyiv (UKBB)" },
+            
+            // Georgia (Связь хабов)
+            { coords: [41.6692, 44.9547], name: "Tbilisi (UGTB)" },
+            
+            // USA
+            { coords: [32.7338, -117.1933], name: "San Diego (KSAN)" },
+            { coords: [40.6413, -73.7781], name: "New York (KJFK)" },
+            { coords: [25.7958, -80.2870], name: "Miami (KMIA)" },
+            
+            // Brazil
+            { coords: [-23.4355, -46.4730], name: "São Paulo (SBGR)" },
+            
+            // UAE
+            { coords: [25.2532, 55.3657], name: "Dubai (OMDB)" }
+        ];
+        
+        milanDestinations.forEach(dest => drawFlightArc(mapMilan, milanCoords, dest.coords, dest.name));
+    }
+        
+        tbilisiDestinations.forEach(dest => drawFlightArc(mapTbilisi, tbilisiCoords, dest.coords, dest.name));
+    }
+});
+</script>
+<!-- ========================================= -->
+    <!-- ФУТЕР И СОЦИАЛЬНЫЕ СЕТИ -->
+    <!-- ========================================= -->
+<div class="social-links">
+                <!-- Ссылка на Discord -->
+                <a href="ТВОЯ_ССЫЛКА_НА_DISCORD" target="_blank" class="social-btn" aria-label="Discord">
+                    <i class="fa-brands fa-discord"></i>
+                </a>
+                
+                <!-- Ссылка на YouTube (для стримов и видео) -->
+                <a href="ТВОЯ_ССЫЛКА_НА_YOUTUBE" target="_blank" class="social-btn" aria-label="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+
+                <!-- Ссылка на TikTok (для коротких роликов) -->
+                <a href="ТВОЯ_ССЫЛКА_НА_TIKTOK" target="_blank" class="social-btn" aria-label="TikTok">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+
+                <!-- Ссылка на Instagram (для скриншотов) -->
+                <a href="ТВОЯ_ССЫЛКА_НА_INSTAGRAM" target="_blank" class="social-btn" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="ССЫЛКА_НА_NEW_SKY" target="_blank" class="nav-btn-join">Join on NewSky</a>
+            </div>
+            
+        
+        <div class="footer-bottom">
+            <p>Strato Connect is a non-profit virtual airline for flight simulation. We are not affiliated with any real-world airline..</p>
+        </div>
+    </footer>
+</body>
+
+</html>

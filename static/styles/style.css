@@ -1,0 +1,1043 @@
+/* ========================================= */
+/* БАЗОВЫЕ НАСТРОЙКИ */
+/* ========================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Alata, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #ffffff;
+    min-height: 100vh;
+    /* Темный полупрозрачный фильтр + фоновая картинка */
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
+        url('file:///C:/Users/Asus/Desktop/Project%20Nah/testik/static/imanges/bg.JPG');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* ========================================= */
+/* ВЕРХНЕЕ МЕНЮ (НАВИГАЦИЯ) */
+/* ========================================= */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10;
+}
+
+/* Настройки логотипа */
+.nav-logo img {
+    height: 55px;
+    width: auto;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+.nav-logo:hover img {
+    transform: scale(1.05);
+}
+
+/* Кнопки меню строго по центру */
+.nav-links {
+    display: flex;
+    gap: 12px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Пустой блок справа для идеального баланса flexbox (чтобы логотип и меню стояли ровно) */
+.nav-right-placeholder {
+    width: 55px; 
+}
+
+/* Стиль кнопок-таблеток */
+.nav-btn {
+    font-family: 'Alata', sans-serif;
+    background-color: #0f172a;
+    color: #ffffff;
+    padding: 10px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: 0.2s ease;
+}
+
+.nav-btn:hover {
+    background-color:#00000042;
+}
+
+/* Активная кнопка */
+.nav-btn.active {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* ========================================= */
+/* ГЛАВНЫЙ КОНТЕЙНЕР (ПЕРВЫЙ ЭКРАН) */
+/* ========================================= */
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 70px 40px 100px 40px; /* Отступы сверху для красоты */
+    gap: 40px;
+}
+
+.content-left {
+    max-width: 650px;
+}
+
+/* Бейдж сверху заголовка */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #44c4db;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #ffffff;
+    margin-bottom: 24px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #0CBFDF;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #a3e635;
+}
+
+/* Главный заголовок */
+.hero-title {
+    font-family: 'Alata', sans-serif;
+    font-size: 72px;
+    line-height: 0.95;
+    letter-spacing: -1px;
+    margin: 0 0 24px 0;
+    font-weight: 400;
+}
+
+.highlight-text {
+    color: #0CBFDF;
+}
+
+/* Текст описания */
+.description-text {
+    color: #b1bfd5;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    max-width: 540px;
+}
+
+/* Кнопки в контенте */
+.buttons-row {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-primary {
+    background-color: #095d8b;
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #00000042;
+}
+
+.btn-secondary {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Правая колонка со списком карточек */
+.content-right {
+    width: 280px;
+}
+
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+.info-card {
+    /* ИМЕННО ЭТО СКРУГЛЯЕТ УГЛЫ (чем больше цифра, тем круглее) */
+    border-radius: 12px; 
+    
+    /* Делаем красивый полупрозрачный темный фон */
+    background-color: rgba(0, 0, 0, 0.355); 
+    
+    /* Добавляем тонкую полупрозрачную рамочку */
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    
+    /* Внутренние отступы, чтобы тексту не было тесно */
+    padding: 14px 20px; 
+    
+    /* Добавляем отступ снизу, чтобы карточки не слипались друг с другом */
+    margin-bottom: 12px; 
+}
+
+
+.info-label {
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* ========================================= */
+/* ПОЛОСА СО СТАТИСТИКОЙ */
+/* ========================================= */
+.stats-section {
+    display: flex;
+    justify-content: center;
+    margin: 40px auto;
+    max-width: 1100px;
+    position: relative;
+    z-index: 5;
+}
+
+.stats-box {
+    background-color: #0f172a;
+    display: flex;
+    padding: 15px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    margin-top: -60px; /* Сдвигаем вверх на картинку */
+}
+
+.stat-item {
+    color: #0CBFDF;
+    font-size: 22px;
+    font-weight: 800;
+    padding: 0 30px;
+    border-right: 1px solid #e5e7eb;
+}
+
+.stat-label {
+    color: #94a3b8;;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* ========================================= */
+/* БЕЛЫЙ БЛОК (FEATURES / ABOUT US) */
+/* ========================================= */
+.features-section {
+    background-color: #0f172a;
+    padding: 80px 20px 100px 20px;
+    color: #1f2937;
+    text-align: center;
+}
+
+.One-Group {
+    color: #ffffff;
+}   
+
+.features-header {
+    max-width: 600px;
+    margin: 0 auto 50px auto;
+}
+
+.badge-outline {
+    display: inline-block;
+    border: 1px solid #d1d5db;
+    color: #9ca3af;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.features-header h2 {
+    font-family: 'Alata', sans-serif;
+    font-size: 42px;
+    margin: 0 0 15px 0;
+    color: #ffffff;
+}
+
+.text-green {
+    color: #0CBFDF;
+        
+}
+
+.features-header p {
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+/* Сетка для трех карточек */
+.features-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 30px;
+    width: 33%;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    transition: 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+}
+
+.icon {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.feature-card h3 {
+    font-size: 18px;
+    margin: 0 0 10px 0;
+    color: #ffffff;
+}
+
+.feature-card p {
+    color: #fdfdfd;;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ========================================= */
+/* СТИЛИ ДЛЯ БЛОКА С МАРШРУТАМИ И ФЛОТОМ */
+/* ========================================= */
+.routes-section {
+    background-color: #ffffff; /* Темно-синий глубокий фон */
+    padding: 90px 20px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.routes-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.routes-section h2 {
+    font-family: 'Alata', sans-serif;
+    font-size: 40px;
+    margin: 15px 0;
+}
+
+.routes-section p {
+    color: #ffffff;
+    max-width: 600px;
+    margin: 0 auto 50px auto;
+}
+
+.routes-grid {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.route-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 30px 20px;
+    width: 33%;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.route-card:hover {
+    border-color: #0CBFDF;
+    transform: translateY(-5px);
+}
+
+.route-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.route-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.route-card p {
+    font-size: 13px;
+    color: #fbfbfb;
+    margin: 0;
+}
+
+/* ========================================= */
+/* ПОДВАЛ (FOOTER) */
+/* ========================================= */
+.site-footer {
+    background-color: #090d16;
+    padding: 30px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.footer-links a {
+    color: #0CBFDF;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* ========================================= */
+/* СТИЛИ ДЛЯ БЛОКА С МАРШРУТАМИ И ФЛОТОМ */
+/* ========================================= */
+.routes-section {
+    background-color: #0f172a; /* Темно-синий фон блока */
+    padding: 90px 20px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.routes-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Главный заголовок блока */
+.routes-section h2 {
+    font-family: 'Alata', sans-serif;
+    font-size: 40px;
+    margin: 15px 0;
+    color: #ffffff; /* Белый цвет для текста "Explore Our" */
+}
+
+/* Описание под заголовком */
+.routes-section p {
+    color: #94a3b8;
+    max-width: 600px;
+    margin: 0 auto 50px auto;
+}
+
+/* Сетка карточек */
+.routes-grid {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+/* Карточка */
+.route-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 30px 20px;
+    width: 33%;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.route-card:hover {
+    border-color: #0CBFDF;
+    transform: translateY(-5px);
+}
+
+.route-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+/* Заголовки самолетов (Airbus, Boeing) */
+.route-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #ffffff; /* Четкий белый цвет */
+}
+
+/* Текст внутри карточек */
+.route-card p {
+    font-size: 13px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* ========================================= */
+/* СТИЛИ ХАБОВ И КАРТЫ В ЦВЕТАХ STRATO CONNECT */
+/* ========================================= */
+.hubs-section {
+    padding: 80px 20px;
+    background-color: #0f172a; /* Темно-синий фирменный фон */
+}
+
+.hubs-container {
+    max-width: 1150px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 35px; /* Расстояние между карточками хабов */
+}
+
+/* Главная карточка хаба */
+.strato-hub-card {
+    display: flex;
+    background: rgba(18, 28, 45, 0.75); /* Полупрозрачный темный блок */
+    border: 1px solid rgba(12, 191, 223, 0.2); /* Тонкая бирюзовая рамка */
+    border-radius: 16px;
+    padding: 28px;
+    gap: 30px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.strato-hub-card:hover {
+    border-color: #0CBFDF; /* Яркая бирюзовая рамка при наведении */
+    box-shadow: 0 10px 30px rgba(12, 191, 223, 0.15);
+    transform: translateY(-3px);
+}
+
+/* Левая текстовая часть */
+.hub-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Овальный бейдж с кодом ИКАО (UGTB / LIMC) */
+.hub-badge {
+    display: inline-block;
+    background: rgba(12, 191, 223, 0.1);
+    border: 1px solid #0CBFDF;
+    color: #0CBFDF;
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+/* Название города */
+.hub-city {
+    font-family: 'Alata', sans-serif;
+    font-size: 34px;
+    color: #ffffff;
+    margin: 0 0 12px 0;
+}
+
+/* Текст описания */
+.hub-description {
+    color: #94a3b8; /* Светло-серый читаемый текст */
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Кол-во маршрутов снизу */
+.hub-stats {
+    margin-top: auto; /* Прижимает к самому низу */
+    color: #0CBFDF; /* Фирменный бирюзовый цвет */
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+/* Правая часть — карта */
+.hub-map-box {
+    flex: 1.4;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 260px;
+}
+
+.hub-map-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 850px) {
+    .strato-hub-card {
+        flex-direction: column;
+    }
+    .hub-map-box {
+        min-height: 200px;
+    }
+}
+
+/* Контейнер интерактивной карты */
+.interactive-map {
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    background-color: #0b1120;
+}
+
+.hub-map-box {
+    flex: 1.4;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(12, 191, 223, 0.25);
+    min-height: 320px;
+}
+
+/* Стилизация подсказок на карте */
+.leaflet-tooltip {
+    background: #0b1120 !important;
+    border: 1px solid #0CBFDF !important;
+    color: #ffffff !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    padding: 3px 8px !important;
+}
+
+/* ========================================= */
+/* СТИЛИ ФУТЕРА И СОЦСЕТЕЙ */
+/* ========================================= */
+.site-footer {
+    background-color: #0f172a; /* Самый темный синий для самого низа */
+    padding: 60px 20px 20px 20px;
+    border-top: 1px solid rgba(12, 191, 223, 0.1);
+    color: #94a3b8;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.footer-brand h2 {
+    font-family: 'Alata', sans-serif;
+    font-size: 28px;
+    color: #ffffff;
+    margin: 0 0 10px 0;
+}
+
+.footer-brand p {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Кнопки соцсетей */
+.social-links {
+    display: flex;
+    gap: 20px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border-radius: 50%;
+    font-size: 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Эффект при наведении (бирюзовое свечение) */
+.social-btn:hover {
+    background-color: #0CBFDF;
+    color: #070a13; /* Темная иконка на ярком фоне */
+    border-color: #0CBFDF;
+    box-shadow: 0 0 15px rgba(12, 191, 223, 0.5);
+    transform: translateY(-3px); /* Слегка подпрыгивает */
+}
+
+/* Самый низ (копирайт) */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 20px;
+    font-size: 12px;
+}
+
+/* ========================================= */
+/* СТИЛИ БЛОКА ФЛОТА */
+/* ========================================= */
+.fleet-section {
+    padding: 80px 20px;
+    background-color: #0f172a; /* Глубокий темный фон */
+    text-align: center;
+}
+
+.fleet-container {
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.fleet-section h2 {
+    font-family: 'Alata', sans-serif;
+    font-size: 38px;
+    color: #ffffff;
+    margin: 0 0 10px 0;
+}
+
+.fleet-section > .fleet-container > p {
+    color: #94a3b8;
+    margin-bottom: 45px;
+    font-size: 15px;
+}
+
+/* Сетка карточек самолетов (4 штуки в ряд на ПК) */
+.fleet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Карточка самолета */
+.fleet-card {
+    background: rgba(18, 28, 45, 0.75);
+    border: 1px solid rgba(12, 191, 223, 0.2);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.fleet-card:hover {
+    border-color: #0CBFDF;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(12, 191, 223, 0.15);
+}
+
+.fleet-card h3 {
+    color: #ffffff;
+    font-size: 19px;
+    margin: 0 0 10px 0;
+}
+
+.fleet-card p {
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Тег дальности полета */
+.fleet-card-tag {
+    background: rgba(12, 191, 223, 0.1);
+    border: 1px solid #0CBFDF;
+    color: #0CBFDF;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    width: fit-content;
+}
+
+.text-green {
+    color: #0CBFDF;
+}
+
+/* ========================================= */
+/* КНОПКА ВСТУПЛЕНИЯ (NEW SKY) */
+/* ========================================= */
+.nav-btn-join {
+    background-color: #0CBFDF; /* Фирменный бирюзовый цвет */
+    color: #070a13;            /* Темный текст для контраста */
+    padding: 10px 20px;
+    border-radius: 25px;       /* Скругленная «таблетка» */
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(12, 191, 223, 0.4); /* Эффект свечения */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-btn-join:hover {
+background-color: #ffffff; /* При наведении становится ярко-белой */
+    color: #070a13;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px); /* Чуть приподнимается */
+}
+
+/* Плавная прокрутка для всего сайта */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ========================================= */
+/* СТИЛИ БЛОКА ВСТУПЛЕНИЯ (JOIN US) */
+/* ========================================= */
+.join-section {
+    padding: 80px 20px;
+    background-color: #0f172a;
+    text-align: center;
+    border-top: 1px solid rgba(12, 191, 223, 0.1);
+}
+
+.join-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.join-section h2 {
+    font-family: 'Alata', sans-serif;
+    font-size: 38px;
+    color: #ffffff;
+    margin: 0 0 10px 0;
+}
+
+.join-section > .join-container > p {
+    color: #94a3b8;
+    margin-bottom: 45px;
+    font-size: 15px;
+}
+
+/* Шаги вступления (3 карточки) */
+.join-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.step-card {
+    background: rgba(18, 28, 45, 0.75);
+    border: 1px solid rgba(12, 191, 223, 0.2);
+    border-radius: 14px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.step-card:hover {
+    border-color: #0CBFDF;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(12, 191, 223, 0.15);
+}
+
+.step-number {
+    font-family: 'Alata', sans-serif;
+    font-size: 32px;
+    color: #0CBFDF;
+    opacity: 0.4;
+    margin-bottom: 10px;
+}
+
+.step-card h3 {
+    color: #ffffff;
+    font-size: 18px;
+    margin: 0 0 10px 0;
+}
+
+.step-card p {
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+#applyModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+#applyModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ========================================== */
+/* СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА СТРАТО КОННЕКТ   */
+/* ========================================== */
+
+/* Задний фон (затемнение на весь экран) */
+.modal-overlay {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75); /* Полупрозрачный темно-серый */
+    backdrop-filter: blur(5px); /* Легкая размытие заднего плана */
+    z-index: 99999; /* Поверх всех элементов сайта */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Сама карточка окна */
+.modal-card {
+    background: #111827; /* Темный фон под стиль авиокомпании */
+    color: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 550px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Крестик закрытия */
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #9ca3af;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #ffffff;
+}
+
+/* Поля формы */
+.form-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.form-row input, 
+.form-row select, 
+#pilotReason {
+    width: 100%;
+    padding: 12px;
+    background: #1f2937;
+    border: 1px solid #374151;
+    color: white;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-row input:focus, 
+.form-row select:focus, 
+#pilotReason:focus {
+    border-color: #0CBFDF; /* Голубая подсветка при клике */
+}
+
+/* Кнопка отправки */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: #0CBFDF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-submit:hover {
+    background: #0aaecb;
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+.form-status {
+    display: none;
+    margin: 10px 0;
+    font-weight: bold;
+    text-align: center;
+}
